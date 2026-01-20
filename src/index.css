@@ -1,5 +1,14 @@
 @import "tailwindcss";
+@import "./assets/fonts/pretendardvariable.css";
 
+@layer base {
+  html {
+    font-family: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  }
+}
+
+
+/* 대표 색상 지정 */
 @theme {
   --color-brown-1: #4e392b;
   --color-brown-2: #8d6e63;
