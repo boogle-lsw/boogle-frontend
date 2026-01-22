@@ -9,18 +9,23 @@ const buttonVariants = cva(
     variants: {
       variant: {
         brownLight:
-          'bg-[var(--color-brown-2)] text-white hover:opacity-90',
+          'bg-[var(--color-brown-2)] hover:opacity-90',
         brownDark:
-          'bg-[var(--color-brown-4)] text-white hover:opacity-90',
+          'bg-[var(--color-brown-4)] hover:opacity-90',
       },
       size: {
-        normal: 'px-5 py-3 text-body-medium',
-        large: 'px-6 py-4 text-body-large',
+        normal: 'px-8 py-3 text-body-medium',
+        large: 'px-15 py-3 text-body-large',
+      },
+      textColor: {
+        white: 'text-white',
+        brown: 'text-[var(--color-brown-4)]',
       },
     },
         defaultVariants: {
           variant: 'brownLight',
           size: 'normal',
+          textColor: 'white',
         },
       }
 );
