@@ -1,12 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MainPage from './app/MainPage';
+import MainPage from '@/app/MainPage';
+import AppLayout from '@/layouts/AppLayout';
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainPage/>} />
-      </Routes>
+    <AppLayout>
+        <Routes>
+          <Route path="/" element={<MainPage/>} />
+        </Routes>
+      </AppLayout>
     </BrowserRouter>
   );
 }
