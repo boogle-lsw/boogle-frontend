@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/AppLayout';
 function App() {
   return (
     <BrowserRouter>
-    <AppLayout>
+      <AppLayout>
         <Routes>
           <Route path="/" element={<MainPage/>} />
         </Routes>
