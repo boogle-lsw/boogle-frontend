@@ -1,13 +1,16 @@
-import Button from "@/components/common/Button"; 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MainPage from '@/app/MainPage';
+import AppLayout from '@/layouts/AppLayout';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold text-center py-8">Boogle</h1>
-      <Button>ㅎㅇ</Button>
-      <Button variant="brownDark" size="large">하이</Button>
-
-    </div>
+    <BrowserRouter>
+      <AppLayout>
+        <Routes>
+          <Route path="/" element={<MainPage/>} />
+        </Routes>
+      </AppLayout>
+    </BrowserRouter>
   );
 }
 
