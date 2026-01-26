@@ -6,7 +6,8 @@ interface User {
 
 interface AuthContextValue {
   user: User | null;
-  setUser: (user: User | null) => void;
+  login: (user: User) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -16,8 +17,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     name: '최환',
   });
 
+  const login = (user: User) => {
+    setUser(user);
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,17 +1,22 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MainPage from '@/app/MainPage';
-import AppLayout from '@/layouts/AppLayout';
+import { AuthProvider } from '@/contexts/AuthContext';
+import Header from '@/components/Header';
 
-function App() {
+import MainPage from '@/pages/MainPage';
+import MyPage from '@/pages/MyPage';
+import LoginPage from '@/pages/LoginPage';
+
+export default function App() {
   return (
-    <BrowserRouter>
-      <AppLayout>
+    <AuthProvider>
+      <BrowserRouter>
+        <Header />
         <Routes>
-          <Route path="/" element={<MainPage/>} />
+          <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/loginpage" element={<LoginPage />} />
         </Routes>
-      </AppLayout>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
-
-export default App;
