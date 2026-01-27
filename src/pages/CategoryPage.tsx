@@ -5,8 +5,8 @@ function CategoryPage () {
 
   return (
     <div>
-      <button onClick={() => navigate("/login")}>
-         로그인
+      <button onClick={() => navigate("/filter")}>
+         선택 완료 (이후 세부 분류 페이지로 이동)
       </button>
     </div>
   );

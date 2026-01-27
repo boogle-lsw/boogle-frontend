@@ -7,6 +7,7 @@ import MyPage from '@/pages/MyPage';
 import LoginPage from '@/pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import CategoryPage from './pages/CategoryPage';
+import FilterPage from './pages/FilterPage';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage/>}/>
           <Route path="/category" element={<CategoryPage/>}/>
+          <Route path="/filter" element={<FilterPage/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
