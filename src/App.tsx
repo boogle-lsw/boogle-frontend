@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import MainPage from '@/pages/MainPage';
 import MyPage from '@/pages/MyPage';
 import LoginPage from '@/pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 
 export default function App() {
   return (
@@ -14,7 +15,8 @@ export default function App() {
         <Routes>
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/loginpage" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

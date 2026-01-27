@@ -4,7 +4,6 @@ import Logo from "@/assets/images/mainLogo.png";
 export default function MainPage() {
   return (
      <div className="min-h-screen bg-[#EEE9E5] flex flex-col items-center justify-center px-6 py-12">
-      {/* TODO: 헤더 추가 */}
       <img src={Logo} alt="Boogle 로고" className="w-40 mb-6" />
 
       <h1 className="text-4xl font-bold text-center mb-6">Boogle</h1>
