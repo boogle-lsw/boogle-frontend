@@ -8,6 +8,8 @@ import LoginPage from '@/pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import CategoryPage from './pages/CategoryPage';
 import FilterPage from './pages/FilterPage';
+import CafeListPage from './pages/CafeListPage';
+import CafeInfoPage from './pages/CafeInfoPage';
 
 export default function App() {
   return (
@@ -15,12 +17,14 @@ export default function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage/>}/>
           <Route path="/category" element={<CategoryPage/>}/>
           <Route path="/filter" element={<FilterPage/>}/>
+          <Route path="/cafelist" element={<CafeListPage/>}/>
+          <Route path="/cafeinfo" element={<CafeInfoPage/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

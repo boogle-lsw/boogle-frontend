@@ -5,8 +5,8 @@ function FilterPage() {
 
   return (
     <div>
-      <button onClick={() => navigate("/login")}>
-        로그인으로 이동
+      <button onClick={() => navigate("/cafelist")}>
+        적용하기 - 카페 리스트 페이지로 이동
       </button>
     </div>
   );
