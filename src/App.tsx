@@ -10,6 +10,7 @@ import CategoryPage from './pages/CategoryPage';
 import FilterPage from './pages/FilterPage';
 import CafeListPage from './pages/CafeListPage';
 import CafeInfoPage from './pages/CafeInfoPage';
+import AddReviewPage from './pages/AddReviewPage';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/filter" element={<FilterPage/>}/>
           <Route path="/cafelist" element={<CafeListPage/>}/>
           <Route path="/cafeinfo" element={<CafeInfoPage/>}/>
+          <Route path="/addreview" element={<AddReviewPage/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
