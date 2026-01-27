@@ -1,20 +1,27 @@
 import Button from "@/components/common/Button";
 import Logo from "@/assets/images/mainLogo.png";
+import { useState } from "react";
+import GuidelineModal from "@/components/modals/GuidelineModal";
 
 export default function MainPage() {
+  const [open, setOpen] = useState(true);
+
   return (
-     <div className="min-h-screen bg-[#EEE9E5] flex flex-col items-center justify-center px-6 py-12">
-      <img src={Logo} alt="Boogle 로고" className="w-40 mb-6" />
+    <>
+      {open && <GuidelineModal onClose={() => setOpen(false)} />}
 
-      <h1 className="text-4xl font-bold text-center mb-6">Boogle</h1>
+      <div className="min-h-screen bg-[#EEE9E5] flex flex-col items-center justify-center px-6 py-12">
+        <img src={Logo} alt="Boogle 로고" className="w-40 mb-6" />
 
-      <p className="text-m text-center leading-relaxed mb-10">
-        신촌 및 홍대 지역 대학생을 위한 <br />
-        맞춤형 카페 추천 서비스
-      </p>
+        <h1 className="text-4xl font-bold text-center mb-6">Boogle</h1>
 
-      <Button size="large">로그인하기</Button>
-    </div>
+        <p className="text-m text-center leading-relaxed mb-10">
+          신촌 및 홍대 지역 대학생을 위한 <br />
+          맞춤형 카페 추천 서비스
+        </p>
+
+        <Button size="large">로그인하기</Button>
+      </div>
+    </>
   );
 }
-
