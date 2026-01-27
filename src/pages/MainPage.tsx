@@ -1,9 +1,11 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@/components/common/Button";
 import Logo from "@/assets/images/mainLogo.png";
-import { useState } from "react";
 import GuidelineModal from "@/components/modals/GuidelineModal";
 
 export default function MainPage() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(true);
 
   return (
@@ -19,8 +21,9 @@ export default function MainPage() {
           신촌 및 홍대 지역 대학생을 위한 <br />
           맞춤형 카페 추천 서비스
         </p>
-
-        <Button size="large">로그인하기</Button>
+        <Button size = "large" onClick={() => navigate("/filter")}>
+         로그인하기
+        </Button>
       </div>
     </>
   );
