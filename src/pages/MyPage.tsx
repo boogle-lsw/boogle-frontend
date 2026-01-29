@@ -1,7 +1,7 @@
 // pages/MyPage.tsx
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function MyPage() {
+function MyPage() {
   const { user } = useAuth();
 
   return (
@@ -11,3 +11,5 @@ export default function MyPage() {
     </div>
   );
 }
+
+export default MyPage
