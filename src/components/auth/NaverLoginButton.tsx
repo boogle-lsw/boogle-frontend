@@ -1,4 +1,3 @@
-
 declare global {
   interface Window {
     naver: any;
@@ -6,14 +5,14 @@ declare global {
 }
 
 const redirectUrl = window.location.origin;
-const NAVER_AUTH_URL = `https://www.api.moonsunpower.com/boogle/api/oauth/naver?redirect=${redirectUrl}`
+const NAVER_AUTH_URL = `https://52.79.255.35/boogle/api/oauth/naver?redirect=${redirectUrl}`;
 //const NAVER_AUTH_URL = `http://localhost:8080/boogle/api/oauth/naver?redirect=${redirectUrl}`
 function NaverLoginButton() {
   // 이거 백엔드에서 code랑 status를 받고 쿠키에 저장해야해서 리다이렉트형식으로 변경함.
   const handleNaverLogin = () => {
     window.location.href = NAVER_AUTH_URL;
   };
-  
+
   return (
     <>
       <button

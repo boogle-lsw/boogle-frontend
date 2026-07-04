@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://www.api.moonsunpower.com/boogle/api/:path*"
+      "destination": "https://52.79.255.35/boogle/api/:path*"
     },
     {
       "source": "/(.*)",

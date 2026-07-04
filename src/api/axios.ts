@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://www.api.moonsunpower.com/boogle';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://52.79.255.35/boogle';
 
 // 일반 요청용
 const axiosInstance: AxiosInstance = axios.create({
