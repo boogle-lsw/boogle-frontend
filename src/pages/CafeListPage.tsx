@@ -28,6 +28,7 @@ export default function CafeListPage() {
   const location = useLocation();
   const [cafes, setCafes] = useState<KakaoCafe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<ScoreFilterKey[]>([]);
   const [sortBy, setSortBy] = useState<SortKey | null>(null);
   const [selectedCafe, setSelectedCafe] = useState<KakaoCafe | null>(null);
@@ -49,6 +50,14 @@ export default function CafeListPage() {
     let cancelled = false;
 
     setIsLoading(true);
+    setLoadError(false);
+
+    const timeoutId = setTimeout(() => {
+      if (cancelled) return;
+      cancelled = true;
+      setIsLoading(false);
+      setLoadError(true);
+    }, 30000);
 
     const univCoords = UNIVERSITY_COORDS[region] || UNIVERSITY_COORDS.sogang;
     const center = univCoords[door] || univCoords['정문'];
@@ -106,7 +115,6 @@ export default function CafeListPage() {
           ),
         );
 
-        // [추가] 카카오 ID 기준 중복 제거
         const uniquePlaces = [...new Map(results.flat().map((p) => [p.id, p])).values()];
 
         // [추가] 원점 기준 500m 이내만 통과 — 오프셋 검색으로 범위 밖 카페가 섞일 수 있어 거리 필터링
@@ -161,7 +169,10 @@ export default function CafeListPage() {
           if (!cancelled) setCafes(allCafes);
         }
       } finally {
-        if (!cancelled) setIsLoading(false);
+        if (!cancelled) {
+          clearTimeout(timeoutId);
+          setIsLoading(false);
+        }
       }
     };
 
@@ -180,11 +191,13 @@ export default function CafeListPage() {
       return () => {
         cancelled = true;
         clearInterval(pollId);
+        clearTimeout(timeoutId);
       };
     }
 
     return () => {
       cancelled = true;
+      clearTimeout(timeoutId);
     };
   }, [region, door]);
 
@@ -252,6 +265,11 @@ export default function CafeListPage() {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-3">
             <div className="w-7 h-7 border-4 border-[#8B7368] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : loadError ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-2 text-center px-6">
+            <p className="text-sm font-semibold text-gray-600">카페를 찾을 수 없습니다</p>
+            <p className="text-xs text-gray-400">잠시 후 다시 시도해주세요.</p>
           </div>
         ) : (
           <div className="flex flex-col divide-y divide-gray-100">
