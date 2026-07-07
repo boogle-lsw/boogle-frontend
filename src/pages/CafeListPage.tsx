@@ -46,11 +46,7 @@ export default function CafeListPage() {
 
   // region 또는 door가 바뀔 때마다 카페 목록을 새로 불러옴
   useEffect(() => {
-    // [변경] SDK 미준비 시 폴링 방식 → cleanup 가능한 setTimeout으로 교체
-    if (!window.kakao?.maps?.services) {
-      const timer = setTimeout(() => setCafes([]), 100);
-      return () => clearTimeout(timer);
-    }
+    let cancelled = false;
 
     setIsLoading(true);
 
@@ -138,6 +134,8 @@ export default function CafeListPage() {
             tags: [],
           }));
 
+        if (cancelled) return;
+
         // 수집된 카카오 ID로 우리 DB 태그/점수 조회 후 병합
         try {
           const res = await api.post(
@@ -145,6 +143,7 @@ export default function CafeListPage() {
             allCafes.map((c) => c.id),
           );
           const dbCafeMap = res.data;
+          if (cancelled) return;
           setCafes(
             allCafes.map((kc) =>
               dbCafeMap[kc.id]
@@ -159,14 +158,34 @@ export default function CafeListPage() {
           );
         } catch {
           // 백엔드 API 실패 시 카카오 데이터만으로 표시
-          setCafes(allCafes);
+          if (!cancelled) setCafes(allCafes);
         }
       } finally {
-        setIsLoading(false);
+        if (!cancelled) setIsLoading(false);
       }
     };
 
-    run();
+    // [변경] SDK 미준비 시 포기하지 않고, 준비될 때까지 짧은 간격으로 재확인 후 검색 실행
+    if (window.kakao?.maps?.services) {
+      run();
+    } else {
+      const pollId = setInterval(() => {
+        if (cancelled) return;
+        if (window.kakao?.maps?.services) {
+          clearInterval(pollId);
+          run();
+        }
+      }, 200);
+
+      return () => {
+        cancelled = true;
+        clearInterval(pollId);
+      };
+    }
+
+    return () => {
+      cancelled = true;
+    };
   }, [region, door]);
 
   const displayedCafes = cafes
