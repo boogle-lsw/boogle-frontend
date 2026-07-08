@@ -57,7 +57,7 @@ export default function CafeListPage() {
       cancelled = true;
       setIsLoading(false);
       setLoadError(true);
-    }, 30000);
+    }, 15000);
 
     const univCoords = UNIVERSITY_COORDS[region] || UNIVERSITY_COORDS.sogang;
     const center = univCoords[door] || univCoords['정문'];
@@ -252,7 +252,7 @@ export default function CafeListPage() {
       <div className="px-6 pb-3 shrink-0">
         <button
           onClick={() => setShowOnlyWithReviews((prev) => !prev)}
-          className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+          className={`cursor-pointer text-xs px-3 py-1.5 rounded-full border transition-all ${
             showOnlyWithReviews
               ? 'bg-[#4A3A2E] text-white border-[#4A3A2E]'
               : 'bg-white text-stone-500 border-stone-200'
@@ -289,8 +289,13 @@ export default function CafeListPage() {
         <CafeDetailPanel cafe={selectedCafe} onClose={() => setSelectedCafe(null)} />
       )}
       {!selectedCafe && (
-        <div className="px-4 py-4 border-t border-gray-100 bg-white shrink-0">
-          <Button onClick={() => navigate('/category')} variant="brown4" size="full">
+        <div className="px-4 py-4 border-t  border-gray-100 bg-white shrink-0">
+          <Button
+            onClick={() => navigate('/category')}
+            variant="brown4"
+            size="full"
+            className="cursor-pointer"
+          >
             지역 다시 선택하기
           </Button>
         </div>

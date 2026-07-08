@@ -68,7 +68,7 @@ function CafeInfoPage() {
             ))}
           </div>
         )}
-        <div className="mt-[-8px] mr-2 flex justify-end">
+        <div className="mt-[8px] mr-2 flex justify-end">
           <button
             onClick={() => setIsReportOpen(true)}
             className="text-[11px] font-medium text-red-600 underline underline-offset-4 transition hover:cursor-pointer hover:text-red-400"
@@ -79,7 +79,6 @@ function CafeInfoPage() {
       </div>
 
       <div className="flex flex-col gap-3 px-4 py-4">
-        {/* 카공 적합도 + 스코어 카드 */}
         <div className="bg-white rounded-2xl px-5 py-5">
           <div className="flex items-center justify-between mb-1">
             <p className="text-sm font-semibold text-gray-800">카페 분석 리포트</p>
