@@ -28,6 +28,7 @@ export default function CafeListPage() {
   const location = useLocation();
   const [cafes, setCafes] = useState<KakaoCafe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<ScoreFilterKey[]>([]);
   const [sortBy, setSortBy] = useState<SortKey | null>(null);
   const [selectedCafe, setSelectedCafe] = useState<KakaoCafe | null>(null);
@@ -46,13 +47,17 @@ export default function CafeListPage() {
 
   // region 또는 door가 바뀔 때마다 카페 목록을 새로 불러옴
   useEffect(() => {
-    // [변경] SDK 미준비 시 폴링 방식 → cleanup 가능한 setTimeout으로 교체
-    if (!window.kakao?.maps?.services) {
-      const timer = setTimeout(() => setCafes([]), 100);
-      return () => clearTimeout(timer);
-    }
+    let cancelled = false;
 
     setIsLoading(true);
+    setLoadError(false);
+
+    const timeoutId = setTimeout(() => {
+      if (cancelled) return;
+      cancelled = true;
+      setIsLoading(false);
+      setLoadError(true);
+    }, 15000);
 
     const univCoords = UNIVERSITY_COORDS[region] || UNIVERSITY_COORDS.sogang;
     const center = univCoords[door] || univCoords['정문'];
@@ -110,7 +115,6 @@ export default function CafeListPage() {
           ),
         );
 
-        // [추가] 카카오 ID 기준 중복 제거
         const uniquePlaces = [...new Map(results.flat().map((p) => [p.id, p])).values()];
 
         // [추가] 원점 기준 500m 이내만 통과 — 오프셋 검색으로 범위 밖 카페가 섞일 수 있어 거리 필터링
@@ -138,6 +142,8 @@ export default function CafeListPage() {
             tags: [],
           }));
 
+        if (cancelled) return;
+
         // 수집된 카카오 ID로 우리 DB 태그/점수 조회 후 병합
         try {
           const res = await api.post(
@@ -145,6 +151,7 @@ export default function CafeListPage() {
             allCafes.map((c) => c.id),
           );
           const dbCafeMap = res.data;
+          if (cancelled) return;
           setCafes(
             allCafes.map((kc) =>
               dbCafeMap[kc.id]
@@ -159,14 +166,39 @@ export default function CafeListPage() {
           );
         } catch {
           // 백엔드 API 실패 시 카카오 데이터만으로 표시
-          setCafes(allCafes);
+          if (!cancelled) setCafes(allCafes);
         }
       } finally {
-        setIsLoading(false);
+        if (!cancelled) {
+          clearTimeout(timeoutId);
+          setIsLoading(false);
+        }
       }
     };
 
-    run();
+    // [변경] SDK 미준비 시 포기하지 않고, 준비될 때까지 짧은 간격으로 재확인 후 검색 실행
+    if (window.kakao?.maps?.services) {
+      run();
+    } else {
+      const pollId = setInterval(() => {
+        if (cancelled) return;
+        if (window.kakao?.maps?.services) {
+          clearInterval(pollId);
+          run();
+        }
+      }, 200);
+
+      return () => {
+        cancelled = true;
+        clearInterval(pollId);
+        clearTimeout(timeoutId);
+      };
+    }
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, [region, door]);
 
   const displayedCafes = cafes
@@ -220,7 +252,7 @@ export default function CafeListPage() {
       <div className="px-6 pb-3 shrink-0">
         <button
           onClick={() => setShowOnlyWithReviews((prev) => !prev)}
-          className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+          className={`cursor-pointer text-xs px-3 py-1.5 rounded-full border transition-all ${
             showOnlyWithReviews
               ? 'bg-[#4A3A2E] text-white border-[#4A3A2E]'
               : 'bg-white text-stone-500 border-stone-200'
@@ -233,6 +265,11 @@ export default function CafeListPage() {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-3">
             <div className="w-7 h-7 border-4 border-[#8B7368] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : loadError ? (
+          <div className="flex flex-col items-center justify-center py-32 gap-2 text-center px-6">
+            <p className="text-sm font-semibold text-gray-600">카페를 찾을 수 없습니다</p>
+            <p className="text-xs text-gray-400">잠시 후 다시 시도해주세요.</p>
           </div>
         ) : (
           <div className="flex flex-col divide-y divide-gray-100">
@@ -252,8 +289,13 @@ export default function CafeListPage() {
         <CafeDetailPanel cafe={selectedCafe} onClose={() => setSelectedCafe(null)} />
       )}
       {!selectedCafe && (
-        <div className="px-4 py-4 border-t border-gray-100 bg-white shrink-0">
-          <Button onClick={() => navigate('/category')} variant="brown4" size="full">
+        <div className="px-4 py-4 border-t  border-gray-100 bg-white shrink-0">
+          <Button
+            onClick={() => navigate('/category')}
+            variant="brown4"
+            size="full"
+            className="cursor-pointer"
+          >
             지역 다시 선택하기
           </Button>
         </div>

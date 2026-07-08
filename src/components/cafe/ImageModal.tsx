@@ -1,4 +1,3 @@
-// CafeInfo 페이지에서 이미지 클릭시 이미지 커지게 함
 interface ImageModalProps {
   image: string | null;
   onClose: () => void;
