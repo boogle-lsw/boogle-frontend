@@ -71,7 +71,7 @@ function CafeInfoPage() {
         <div className="mt-[8px] mr-2 flex justify-end">
           <button
             onClick={() => setIsReportOpen(true)}
-            className="text-[11px] font-medium text-red-600 underline underline-offset-4 transition hover:cursor-pointer hover:text-red-400"
+            className="text-[11px] font-medium text-brown-4 underline underline-offset-4 transition hover:cursor-pointer hover:text-red-400"
           >
             정보 수정 제안
           </button>
@@ -148,7 +148,7 @@ function CafeInfoPage() {
         {/* 버튼 영역 */}
         <div className="flex flex-col gap-2 mt-4">
           <Button variant="brown4" size="full" textColor="white" onClick={handleReviewClick}>
-            ✏️ 리뷰 등록하기
+            리뷰 등록하기
           </Button>
           <div className="flex gap-2">
             <Button
